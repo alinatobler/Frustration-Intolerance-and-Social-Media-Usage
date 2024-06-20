@@ -1,14 +1,6 @@
 Note that the echo = FALSE parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 library(dplyr)
-## 
-## Attaching package: 'dplyr'
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
- library(tidyr)
+library(tidyr)
 
  # For plotting
  library(ggplot2)
@@ -47,35 +39,19 @@ simulated_data_alternative <- data.frame(Frustration = standardized_frustration,
 
 # show first few rows of data set 
 head(simulated_data_alternative)
-##   Frustration Social_Media
-## 1 -0.59714143  -1.27244397
-## 2 -0.24832434   1.11030059
-## 3  1.64085949   0.09778132
-## 4  0.06922019  -0.87883847
-## 5  0.13129514  -0.24407627
-## 6  1.80598266   0.29661996
+
 # calculate the actual correlation between the transformed variables 
 actual_correlation_alternative <- cor(simulated_data_alternative$Frustration, simulated_data_alternative$Social_Media)
 
 # show the actual correlation
 print(actual_correlation_alternative)
-## [1] 0.3420922
+
 # calculate correlation and p-value 
 cor_test_result <- cor.test(simulated_data_alternative$Frustration, simulated_data_alternative$Social_Media)
 
 # show results 
 print(cor_test_result)
-## 
-##  Pearson's product-moment correlation
-## 
-## data:  simulated_data_alternative$Frustration and simulated_data_alternative$Social_Media
-## t = 4.8571, df = 178, p-value = 2.598e-06
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  0.2061434 0.4650848
-## sample estimates:
-##       cor 
-## 0.3420922
+
 # Scatterplot of transformed variables 
 plot(simulated_data_alternative$Frustration, simulated_data_alternative$Social_Media, 
      main = "Scatterplot for transformed variables ",
@@ -136,3 +112,7 @@ ifelse(correlation_results >= 0.25 & correlation_results <= 0.35, "green",
 
 # insert points with colours
 points(seed_values, correlation_results, pch = 19, col = colors)
+
+# Power Analysis
+pwr.r.test(r = 0.3, sig.level = 0.05, power = 0.8)
+pwr.anova.test(k = 4, f = 0.25, sig.level = 0.05 , power = 0.8 )
