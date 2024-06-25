@@ -1,0 +1,77 @@
+---
+title: "Analysis"
+author: "Thomas"
+date: "2024-06-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+install.packages("psych")
+```
+
+```{r library}
+library(ggplot2)
+library(car)
+library(tidyr)
+library(dplyr)
+library(readr)
+library(here)
+library(psych)
+```
+
+```{r testing requirements}
+
+# Levene-Test to check for homogeneity of variances for the ANOVA
+levene_Frustration <- leveneTest(Frustrations_Score ~ factor(App), data = data_frustration_2024_06_06_15_33)
+print(levene_test_result)
+
+
+# Shapiro-Wilk-Tests to check for normal distribution of the data 
+shapiro.test(data_frustration_2024_06_06_15_33$Frustrations_Score)
+shapiro.test(data_frustration_2024_06_06_15_33$Social_Media_Score)
+
+
+# Q-Q-Plots
+qqnorm(data_frustration_2024_06_06_15_33$Social_Media_Score, main = "Q-Q Plot Social Media", xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
+qqline(data_frustration_2024_06_06_15_33$Social_Media_Score, col = "darkblue")
+
+qqnorm(data_frustration_2024_06_06_15_33$Frustrations_Score, main = "Q-Q Plot Frustration", xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
+qqline(data_frustration_2024_06_06_15_33$Frustrations_Score, col = "darkblue")
+
+
+# Boxplots to check for outliers
+ggplot(data_frustration_2024_06_06_15_33, aes(y = Social_Media_Score)) +
+  geom_boxplot() +
+  labs(title = NULL, y = "Social Media Score")
+ggplot(data_frustration_2024_06_06_15_33, aes(y = Frustrations_Score)) +
+  geom_boxplot() +
+  labs(title = NULL, y = "Frustration Score")
+
+
+# Scatterplot
+plot(data_frustration_2024_06_06_15_33$Frustrations_Score, data_frustration_2024_06_06_15_33$Social_Media_Score, 
+     main = "Scatterplot",
+     xlab = "Frustration", ylab = "Social Media")
+
+
+```
+
+
+```{r Pearson Correlation}
+
+# Pearson correlation to compare Frustration Intolerance and Social Media Usage
+cor.test(data_frustration_2024_06_06_15_33$Frustrations_Score, data_frustration_2024_06_06_15_33$Social_Media_Score, method = "pearson")
+
+```
+
+```{r ANOVA}
+
+anova_result <- aov(Frustrations_Score ~ factor(App), data = data_frustration_2024_06_06_15_33)
+print(anova_result)
+
+```
+```{r}
+count_table <- table(data_frustration_2024_06_06_15_33$App)
+print(count_table)
+```
+
